@@ -1,0 +1,20 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python caching
+__pycache__/
+*.pyc
+
+# Data and models (crucial for Kaggle projects)
+*.csv
+*.json
+*.parquet
+*.h5
+*.pkl
+*.pt
+*.onnx
+
+# Environment variables / API keys
+.env
