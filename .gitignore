@@ -18,3 +18,7 @@ __pycache__/
 
 # Environment variables / API keys
 .env
+
+# Streamlit configuration and secrets
+.streamlit/config.toml
+.streamlit/secrets.toml
