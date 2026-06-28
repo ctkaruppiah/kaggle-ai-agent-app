@@ -1,0 +1,55 @@
+name: Deploy to Google Cloud Run
+
+on:
+  push:
+    branches:
+      - main # Change this to master if your default branch is master
+
+env:
+  PROJECT_ID: kaggle-ai-agent-500821      # Your GCP Project ID
+  REGION: us-central1                     # Your GCP region
+  SERVICE_NAME: kaggle-ai-agent-app       # Your Cloud Run service name
+  GAR_LOCATION: us-central1               # Artifact Registry region
+  REPOSITORY: my-docker-repo              # Artifact Registry repository name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # Crucial permissions block required for Workload Identity Federation
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Corrected Workload Identity Federation step
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          # TODO: Replace YOUR_PROJECT_NUMBER with your actual 12-digit GCP numeric ID
+          workload_identity_provider: 'projects/93571174435/locations/global/workloadidentitypools/github-pool/providers/github-provider'
+          # Fixed the service account string layout below:
+          service_account: 'github-deployer@://gserviceaccount.com'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker ${{ env.GAR_LOCATION }}-docker.pkg.dev
+
+      - name: Build and Push Container
+        run: |
+          docker build -t ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }} .
+          docker push ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE_NAME }}
+          region: ${{ env.REGION }}
+          image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
