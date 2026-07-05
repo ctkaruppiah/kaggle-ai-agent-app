@@ -16,9 +16,9 @@ __pycache__/
 *.pt
 *.onnx
 
-# Environment variables / API keys
+# Sensitive Environment variables / API keys
 .env
 
-# Streamlit configuration and secrets
+# Streamlit Local configuration and secrets
 .streamlit/config.toml
 .streamlit/secrets.toml
