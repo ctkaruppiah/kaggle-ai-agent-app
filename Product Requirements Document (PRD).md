@@ -84,6 +84,17 @@ FinMesh utilizes a multi-layered, serverless system architecture designed to pro
 | **Persistence Layer** | Supabase (PostgreSQL + JSONB) | Serves as the central system memory, securing a permanent audit trail of compliance verdicts and states. |
 | **DevOps & Infrastructure** | Docker, Google Cloud Run, GitHub Actions | Orchestrates containerized serverless scaling and automates the continuous delivery pipeline. |
 ---
+### 3.1 Required Configuration Environment Variables
+To initialize the FinMesh operational engine locally or on Google Cloud Run, create a `.env` file in your root workspace containing these mandatory access parameters:
+
+```text
+# Supabase Persistent Store Access Configuration
+SUPABASE_URL=https://supabase.co
+SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# Google Gemini Intelligence Layer Token
+GEMINI_API_KEY=AIzaSyA1...
+```
 ## 4. Comprehensive Feature Specifications (Updated)
 
 ### 4.1 Epic Intake Desk
@@ -313,6 +324,7 @@ async def process_epic_intake(payload: EpicIntakePayload):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Core orchestration layer failed executing pipeline processing: {str(e)}"
         )
+}
 ```
 
 ```
