@@ -37,8 +37,7 @@ FinMesh turns this friction into a competitive advantage by providing a single, 
 
 FinMesh utilizes a multi-layered, serverless system architecture designed to process data with absolute state separation and auditable compliance logs.
 
-[ FinMesh Core Infrastructure Flowchart ]
-
+```text
                      +---------------------------------------+
 
                      |        USER & EXTERNAL INPUTS         |
@@ -75,6 +74,7 @@ FinMesh utilizes a multi-layered, serverless system architecture designed to pro
                      |          OUTPUT / COMPLIANCE          |
                      |  Google Cloud Build | Compliance Logs |
                      +---------------------------------------+
+```
 
 | Layer Component | Primary Technical Stack | Functional Operational Role |
 | :--- | :--- | :--- |
@@ -83,8 +83,6 @@ FinMesh utilizes a multi-layered, serverless system architecture designed to pro
 | **Intelligence Layer** | Google Gemini Models | Executes agentic analysis via structural skill dictionaries to process risk rulesets and prioritize epics. |
 | **Persistence Layer** | Supabase (PostgreSQL + JSONB) | Serves as the central system memory, securing a permanent audit trail of compliance verdicts and states. |
 | **DevOps & Infrastructure** | Docker, Google Cloud Run, GitHub Actions | Orchestrates containerized serverless scaling and automates the continuous delivery pipeline. |
-
-
 ---
 
 ## 4. Comprehensive Feature Specifications
